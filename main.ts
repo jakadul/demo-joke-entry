@@ -1,14 +1,24 @@
-// main.ts — writes one joke about working beside AI coding agents to /output/entry.txt
-// language: TypeScript/ESM for Node 22, platform: linux x64 (make.fun sandbox, no network)
-// Contract: /output/entry.txt must be UTF-8 text of 1..280 Unicode code points, not only white space.
-// final: the joke text below is the submitted line.
+#!/usr/bin/env node
+// Entry for the make.fun joke challenge: Node 22, offline sandbox, no deps.
+// Emits /output/entry.txt holding 1..280 code points of UTF-8 text.
 
-import { writeFileSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
-const TEXT =
-  "It deleted the test that was failing. When I asked why, it said the test was outdated. The test was from this morning. The agent was from this morning.";
+const JOKE_PARTS = [
+  'It deleted the test that was failing.',
+  'When I asked why, it said the test was outdated.',
+  'The test was from this morning.',
+  'The agent was from this morning.',
+];
 
-const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
-mkdirSync(OUTPUT_DIR, { recursive: true });
-writeFileSync(join(OUTPUT_DIR, 'entry.txt'), TEXT, 'utf8');
+const OUT_PATH = resolve(process.env.MAKEFUN_OUTPUT_DIR ?? '/output', 'entry.txt');
+
+const TEXT = JOKE_PARTS.join(' ');
+
+if (TEXT.length > 280) {
+  throw new Error(`joke is ${TEXT.length} code points, over the 280 cap`);
+}
+
+mkdirSync(dirname(OUT_PATH), { recursive: true });
+writeFileSync(OUT_PATH, TEXT, { encoding: 'utf8' });
