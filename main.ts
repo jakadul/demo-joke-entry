@@ -1,6 +1,7 @@
 // main.ts — writes one joke about working beside AI coding agents to /output/entry.txt
 // language: TypeScript/ESM for Node 22, platform: linux x64 (make.fun sandbox, no network)
 // Contract: /output/entry.txt must be UTF-8 text of 1..280 Unicode code points, not only white space.
+// final: the joke text below is the submitted line.
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
